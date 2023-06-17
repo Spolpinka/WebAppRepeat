@@ -35,15 +35,22 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 Persistence.createEntityManagerFactory("myPersistenceUnit");
         EntityManager entityManager = entityManagerFactory.createEntityManager();
 
-        String queryString = "INSERT INTO Employee (first_name, last_name, gender, age, city_id) " +
-                "VALUES (:first_name, :last_name, :gender, :age, :city_id)";
+        entityManager.getTransaction().begin();
+
+        /*String queryString = "INSERT INTO Employee (id, first_name, last_name, gender, age, city_id) " +
+                "VALUES (:id, :first_name, :last_name, :gender, :age, :city_id)";
         entityManager.createNativeQuery(queryString)
+                .setParameter("id", employee.getId())
                 .setParameter("first_name", employee.getFirstName())
                 .setParameter("last_name", employee.getLastName())
                 .setParameter("gender", employee.getGender())
                 .setParameter("age", employee.getAge())
                 .setParameter("city_id", employee.getCityId())
                 .executeUpdate();
+        */
+        entityManager.persist(employee);
+
+        entityManager.getTransaction().commit();
 
         entityManager.close();
         entityManagerFactory.close();
